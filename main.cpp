@@ -35,15 +35,19 @@ int main() {
                 workManager.add_emp();
                 break;
             case 2: //显示职工
+                workManager.show_emp();
                 break;
             case 3: //删除职工
                 break;
             default:
                 //system("cls");
+                return 0;
                 break;
         }
-        return 0;
+
     }
     //test();
+
+
 }
 

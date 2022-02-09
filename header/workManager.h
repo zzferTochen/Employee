@@ -36,6 +36,12 @@ public:
 
     //保存文件
     void save();
+
+    int get_EmpNum();
+
+    void init_Emp();
+
+    void show_emp();
     //退出程序
     void exitSystem();
 

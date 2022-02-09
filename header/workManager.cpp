@@ -5,6 +5,7 @@
 #include "employee.h"
 #include "manager.h"
 #include "boss.h"
+#include "unistd.h"
 
 workManager::workManager() {
     ifstream ifs;
@@ -33,6 +34,19 @@ workManager::workManager() {
         return;
     }
 
+    int num = this-> get_EmpNum();
+//    cout<<"职工个数为"<<num<<endl;
+    this->m_empNum = num;
+    this->m_empArray = new Work *[this->m_empNum];
+    init_Emp();
+
+    //测试代码
+    for (int i = 0; i < m_empNum; i++)
+    {
+//        cout << "职工号： " << this->m_empArray[i]->m_id
+//             << " 职工姓名： " << this->m_empArray[i]->name
+//             << " 部门编号： " << this->m_empArray[i]->m_DeptId << endl;
+    }
 
 }
 
@@ -138,5 +152,61 @@ void workManager::save() {
 
     ofs.close();
 
+}
+
+int workManager::get_EmpNum() {
+    ifstream ifs;
+    ifs.open(FILENAME,ios::in);
+
+    int id;
+    string name;
+    int dId;
+
+    int num = 0;
+
+    while(ifs >> id && ifs >> name && ifs >> dId){
+        num++;
+    }
+
+    ifs.close();
+    return num;
+}
+
+void workManager::init_Emp() {
+    ifstream ifs;
+    ifs.open(FILENAME,ios::in);
+
+    int id;
+    string name;
+    int dId;
+
+    int index = 0;
+    while(ifs>>id && ifs >> name && ifs >> dId){
+        Work *work = nullptr;
+        if(dId == 1 ){
+            work = new employee(id,name,dId);
+        }
+        if(dId == 2 ){
+            work = new manager(id,name,dId);
+        }
+        if(dId == 3 ){
+            work = new boss(id,name,dId);
+        }
+        this->m_empArray[index] = work;
+        index++;
+    }
+
+}
+
+void workManager::show_emp() {
+    if(this->m_fileIsEmpty){
+        cout<<"文件不存在或者为空！"<<endl;
+    }else{
+        for (int i = 0; i < m_empNum; ++i) {
+            this->m_empArray[i]->showInfo();
+        }
+    }
+    system("read");
+    system("clear");
 }
 
